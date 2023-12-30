@@ -1,17 +1,18 @@
 import { Menu, MenuProps } from "antd";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const items: MenuProps["items"] = [
     {
-      label: "Home",
+      label: <Link to={"#"}>Home</Link>,
       key: "home",
     },
     {
-      label: "Planning",
+      label: <Link to={"/plan"}>Planning</Link>,
       key: "plan",
     },
     {
-      label: "Place",
+      label: <Link to={"/place"}>Place</Link>,
       key: "place",
     },
     {
@@ -19,11 +20,11 @@ const Navbar = () => {
       key: "other",
       children: [
         {
-          label: "Option 1",
+          label: <Link to={"/option-1"}>Option 1</Link>,
           key: "setting:1",
         },
         {
-          label: "Option 2",
+          label: <Link to={"/option-2"}>Option 2</Link>,
           key: "setting:2",
         },
       ],

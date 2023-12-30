@@ -3,6 +3,7 @@ import Logo from "./Logo";
 import Navbar from "./Navbar";
 import { Button } from "antd";
 import NavDropdown from "./NavDropdown";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [login, setLogin] = useState(false);
@@ -19,9 +20,11 @@ const Header = () => {
       {login ? (
         <NavDropdown />
       ) : (
-        <Button className="flex items-center text-main border-main mr-2">
-          Log in now
-          <img className="ml-1" src="/fly.svg" />
+        <Button className="text-main border-main mr-2">
+          <Link to={"/login"} className="flex items-center">
+            Log in now
+            <img className="ml-1" src="/fly.svg" />
+          </Link>
         </Button>
       )}
     </div>
