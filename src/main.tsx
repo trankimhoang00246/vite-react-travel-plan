@@ -4,13 +4,11 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
-import Logout from "./screens/Logout";
 import NotFound from "./screens/error/NotFound";
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },
   { path: "/login", element: <Login /> },
-  { path: "/logout", element: <Logout /> },
   { path: "*", element: <NotFound /> },
 ]);
 
