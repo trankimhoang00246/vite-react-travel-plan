@@ -1,9 +1,11 @@
 import Header from "../components/Header/Header";
+import Banner from "../components/HomePage/Banner";
 
 const Home = () => {
   return (
-    <div>
+    <div className="max-w-screen-xl mx-auto">
       <Header />
+      <Banner />
     </div>
   );
 };
