@@ -52,7 +52,7 @@ const LoginForm = () => {
           <Checkbox>Remember me</Checkbox>
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 9, span: 8 }}>
+        <Form.Item className="flex justify-center">
           <Button className="bg-main text-white border-none" htmlType="submit">
             Submit
           </Button>
