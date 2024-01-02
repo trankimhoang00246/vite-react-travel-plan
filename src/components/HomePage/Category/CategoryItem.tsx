@@ -9,10 +9,10 @@ const CategoryItem = (props: IProps) => {
   return (
     <div className="m-2">
       <Link className=" w-[200px] grid justify-center" to={"category"}>
-        <div className="w-[200px] h-[300px] overflow-hidden">
+        <div className="w-[200px] overflow-hidden">
           <img
-            className="h-full
-            w-auto
+            className="object-cover
+            h-[300px]
             rounded-tl-[100px] 
             rounded-tr-[100px] 
             rounded-br-[100px] 
