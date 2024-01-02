@@ -11,9 +11,8 @@ const Banner = () => {
             Discover the <br /> Best Travel
             <br /> Planing
           </div>
-          <div className="mt-8 mb-10">
+          <div className="mt-8 mb-10 text-[16px] max-w-[500px]">
             Plan and look for your perfect trip with expert advice, travel tips,
-            <br />
             destination information and inspiration from us.
           </div>
           <div>
