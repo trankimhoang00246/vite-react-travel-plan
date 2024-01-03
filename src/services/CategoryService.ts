@@ -8,7 +8,11 @@ const getAllByCategoryName = async (name: string) => {
     );
     return data;
   } catch (error) {
-    console.log(error.response.data.message);
+    let errorMessage = "Failed to do something exceptional";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    console.log(errorMessage);
   }
 };
 

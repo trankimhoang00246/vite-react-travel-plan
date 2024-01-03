@@ -11,9 +11,7 @@ import ICategory from "../../../types/ICategory";
 
 const Categories = () => {
   const [index, setIndex] = useState(1);
-  const [categoriesData, setCategoriesData] = useState<Array<ICategory>>(
-    [] || null
-  );
+  const [categoriesData, setCategoriesData] = useState<Array<ICategory>>([]);
 
   const nextSlide = () => {
     setIndex(index + 1);
