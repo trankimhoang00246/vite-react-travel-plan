@@ -1,9 +1,5 @@
-import { Col, Modal, Row } from "antd";
+import { Modal } from "antd";
 import PlacesForm from "./PlacesForm";
-import AddressForm from "./AddressForm";
-import LinkForm from "./LinkForm";
-import CategoryForm from "./CategoryForm";
-import ImageForm from "./ImageForm";
 
 interface IProps {
   isModalOpen: boolean;
@@ -31,16 +27,6 @@ const PlacesModal = (props: IProps) => {
         width={1000}
       >
         <PlacesForm />
-        <Row gutter={16}>
-          <Col span={12}>
-            <AddressForm />
-          </Col>
-          <Col span={12}>
-            <LinkForm />
-          </Col>
-        </Row>
-        <CategoryForm />
-        <ImageForm />
       </Modal>
     </div>
   );

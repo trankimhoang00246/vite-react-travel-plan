@@ -16,9 +16,7 @@ const CategoryList = (props: IProps) => {
   };
 
   useEffect(() => {
-    console.log(props.data);
     sliceData();
-    console.log(data);
   }, []);
 
   return (

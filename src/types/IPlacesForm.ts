@@ -7,9 +7,13 @@ export default interface IPlacesForm {
   endDay: string;
   minTimePlaces: number;
   maxTimePlaces: number;
-  categoryId: Array<number>;
-  imageId: Array<number>;
-  linkId: number;
-  addressId: number;
-  full: boolean;
+  destination: number;
+  categoryId: number[];
+  addressString: string;
+  addressLinkMap: string;
+  embeddedAddress: string;
+  name: string;
+  url: string;
+  imageId: number[];
+  full: string;
 }

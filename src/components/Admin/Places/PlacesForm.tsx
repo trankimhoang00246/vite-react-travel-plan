@@ -1,6 +1,16 @@
-import { Checkbox, Col, Form, Input, Row, Select } from "antd";
+import { Button, Checkbox, Col, Form, Input, Row, Select } from "antd";
 import IPlacesForm from "../../../types/IPlacesForm";
 import TextArea from "antd/es/input/TextArea";
+import CategoryService from "../../../services/CategoryService";
+import _ from "lodash";
+import { useEffect, useState } from "react";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import ImageUpload from "./ImageUpload";
+
+interface IOptions {
+  value: number;
+  label: string;
+}
 
 const PlacesForm = () => {
   const time: any = [
@@ -157,10 +167,54 @@ const PlacesForm = () => {
       label: "23:30",
     },
   ];
+  const [destination, setDestination] = useState<IOptions[]>([]);
+  const [selectedItems, setSelectedItems] = useState();
+  const [categories, setCategories] = useState<IOptions[]>([]);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
-  function onFinish(values: any): void {
-    throw new Error("Function not implemented.");
-  }
+  const handleCheckboxChange = (checked: any) => {
+    setIsCheckboxChecked(checked);
+  };
+
+  const getAllByCategoryName = () => {
+    CategoryService.getAllByCategoryName("area")
+      .then((res) => {
+        const data = res?.data;
+
+        const transformedData: IOptions[] = _.map(data, (item) => ({
+          value: item.id,
+          label: item.name,
+        }));
+
+        setDestination(transformedData);
+      })
+      .catch((e: Error) => {
+        console.log(e.message);
+      });
+
+    CategoryService.getAllByCategoryName("like")
+      .then((res) => {
+        const data = res?.data;
+
+        const transformedData: IOptions[] = _.map(data, (item) => ({
+          value: item.id,
+          label: item.name,
+        }));
+
+        setCategories(transformedData);
+      })
+      .catch((e: Error) => {
+        console.log(e.message);
+      });
+  };
+
+  useEffect(() => {
+    getAllByCategoryName();
+  }, []);
+
+  const onFinish = (values: IPlacesForm) => {
+    console.log(values);
+  };
 
   return (
     <div>
@@ -239,8 +293,12 @@ const PlacesForm = () => {
 
             <Row gutter={16}>
               <Col span={4}>
-                <Form.Item<IPlacesForm> name="full">
-                  <Checkbox>24/24</Checkbox>
+                <Form.Item<IPlacesForm> name="full" valuePropName="checked">
+                  <Checkbox
+                    onChange={(e) => handleCheckboxChange(e.target.checked)}
+                  >
+                    24/24
+                  </Checkbox>
                 </Form.Item>
               </Col>
               <Col span={10}>
@@ -249,6 +307,7 @@ const PlacesForm = () => {
                     placeholder="Giờ mở cửa"
                     optionFilterProp="children"
                     options={time}
+                    disabled={isCheckboxChecked}
                   />
                 </Form.Item>
               </Col>
@@ -258,16 +317,140 @@ const PlacesForm = () => {
                     placeholder="Giờ đóng cửa"
                     optionFilterProp="children"
                     options={time}
+                    disabled={isCheckboxChecked}
                   />
                 </Form.Item>
               </Col>
             </Row>
           </Col>
         </Row>
+
+        <div className="mb-4">
+          <Form.Item<IPlacesForm> name="destination">
+            <Select
+              placeholder="Destination"
+              style={{ width: "100%" }}
+              options={destination}
+            />
+          </Form.Item>
+        </div>
+
         <Row gutter={16}>
-          <Col span={12}></Col>
-          <Col span={12}></Col>
+          <Col span={12}>
+            <Form.Item<IPlacesForm>
+              name="addressString"
+              rules={[
+                { required: true, message: "Please input your address!" },
+              ]}
+            >
+              <Input placeholder="address" />
+            </Form.Item>
+
+            <Form.Item<IPlacesForm>
+              name="addressLinkMap"
+              rules={[
+                { required: true, message: "Please input your link map!" },
+              ]}
+            >
+              <Input placeholder="link map" />
+            </Form.Item>
+
+            <Form.Item<IPlacesForm>
+              name="embeddedAddress"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your embedded address!",
+                },
+              ]}
+            >
+              <Input placeholder="embedded address" />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item<IPlacesForm>
+              name="name"
+              rules={[
+                { required: true, message: "Please input your name web!" },
+              ]}
+            >
+              <Input placeholder="name web" />
+            </Form.Item>
+
+            <Form.Item<IPlacesForm>
+              name="url"
+              rules={[
+                { required: true, message: "Please input your url web!" },
+              ]}
+            >
+              <Input placeholder="website" />
+            </Form.Item>
+          </Col>
         </Row>
+        <div className="mb-4">
+          <Form.Item<IPlacesForm>
+            name="categoryId"
+            rules={[{ required: true, message: "Please input your url web!" }]}
+          >
+            <Select
+              mode="multiple"
+              placeholder="Categories"
+              value={selectedItems}
+              onChange={setSelectedItems}
+              style={{ width: "100%" }}
+              options={categories}
+            />
+          </Form.Item>
+        </div>
+        <Form.List name="imageId">
+          {(fields, { add, remove }, { errors }) => (
+            <>
+              {fields.map((field) => (
+                <Form.Item
+                  required={false}
+                  key={field.key}
+                  className="inline-block"
+                >
+                  <Form.Item
+                    {...field}
+                    validateTrigger={["onChange", "onBlur"]}
+                    rules={[
+                      {
+                        required: true,
+                        whitespace: true,
+                        message:
+                          "Please input passenger's name or delete this field.",
+                      },
+                    ]}
+                    noStyle
+                  >
+                    <ImageUpload />
+                  </Form.Item>
+                  {fields.length > 1 ? (
+                    <MinusCircleOutlined
+                      className="dynamic-delete-button"
+                      onClick={() => remove(field.name)}
+                    />
+                  ) : null}
+                </Form.Item>
+              ))}
+              <Form.Item>
+                <Button
+                  type="dashed"
+                  onClick={() => add()}
+                  icon={<PlusOutlined />}
+                >
+                  Add image
+                </Button>
+                <Form.ErrorList errors={errors} />
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
+
+        <Form.Item>
+          <Button htmlType="submit">Submit</Button>
+        </Form.Item>
       </Form>
     </div>
   );
