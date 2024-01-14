@@ -28,11 +28,10 @@ const PlacesTable = () => {
         const data = res?.data;
         const transformedData = _.map(data, (item) => ({
           ...item,
-          imageUrl:
-            item.imageUrl.length !== 0 ? item?.imageUrl?.first : "/logo.svg",
+          imageUrl: item.imageUrl[0] ? item.imageUrl[0] : "/logo.svg",
           category: _.map(item.category, "name"),
         }));
-
+        console.log(transformedData);
         setPlacesData(transformedData);
       })
       .catch((e: Error) => {
