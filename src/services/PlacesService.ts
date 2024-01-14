@@ -13,9 +13,11 @@ const getAllNotP = async () => {
   }
 };
 
-const save = async () => {
+const savePlaces = async (placeData: any) => {
   try {
-    const data = await http.get<any>(`/places/get-all-not-p`);
+    const response = await http.post(`/places`, placeData);
+    const data = response.data;
+    return data;
   } catch (error) {
     let errorMessage = "Failed to do something exceptional";
     if (error instanceof Error) {
@@ -27,6 +29,7 @@ const save = async () => {
 
 const PlacesService = {
   getAllNotP,
+  savePlaces,
 };
 
 export default PlacesService;

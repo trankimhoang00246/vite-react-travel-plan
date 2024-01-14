@@ -29,7 +29,7 @@ const PlacesTable = () => {
         const transformedData = _.map(data, (item) => ({
           ...item,
           imageUrl:
-            item.imageUrl.length !== 0 ? item.imageUrl.first() : "/logo.svg",
+            item.imageUrl.length !== 0 ? item?.imageUrl?.first : "/logo.svg",
           category: _.map(item.category, "name"),
         }));
 

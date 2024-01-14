@@ -14,6 +14,7 @@ export default interface IPlacesForm {
   embeddedAddress: string;
   name: string;
   url: string;
-  imageId: number[];
+  imageId: any;
+  tag: string[];
   full: string;
 }

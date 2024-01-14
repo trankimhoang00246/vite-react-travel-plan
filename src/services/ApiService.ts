@@ -1,9 +1,37 @@
+import { UploadFile } from "antd";
 import http from "../httpCommon";
-import ILinkForm from "../types/ILinkForm";
 
-const saveLink = async (linkForm: ILinkForm) => {
+const uploadImage = async (file: UploadFile) => {
   try {
-    const data = await http.post<any>(`/links`, linkForm);
+    const formData = new FormData();
+    if (file.originFileObj) {
+      formData.append("image", file.originFileObj);
+      const response = await http.post("/image", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const data = response.data;
+      console.log(data);
+      return data;
+    }
+  } catch (error) {
+    let errorMessage = "Failed to do something exceptional";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    console.log(errorMessage);
+  }
+};
+
+const saveLink = async (name: string, url: string) => {
+  try {
+    const response = await http.post(`/links`, {
+      name,
+      url,
+    });
+    const data = response.data;
+    console.log(data);
     return data;
   } catch (error) {
     let errorMessage = "Failed to do something exceptional";
@@ -14,6 +42,29 @@ const saveLink = async (linkForm: ILinkForm) => {
   }
 };
 
-const ApiService = { saveLink };
+const saveAddress = async (
+  addressString: string,
+  addressLinkMap: string,
+  embeddedAddress: string
+) => {
+  try {
+    const response = await http.post(`/address`, {
+      addressString,
+      addressLinkMap,
+      embeddedAddress,
+    });
+    const data = response.data;
+    console.log(data);
+    return data;
+  } catch (error) {
+    let errorMessage = "Failed to do something exceptional";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    console.log(errorMessage);
+  }
+};
+
+const ApiService = { uploadImage, saveLink, saveAddress };
 
 export default ApiService;

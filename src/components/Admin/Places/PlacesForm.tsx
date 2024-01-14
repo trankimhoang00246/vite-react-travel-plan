@@ -1,16 +1,38 @@
-import { Button, Checkbox, Col, Form, Input, Row, Select } from "antd";
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  Row,
+  Select,
+  Upload,
+  Modal,
+  InputNumber,
+} from "antd";
 import IPlacesForm from "../../../types/IPlacesForm";
 import TextArea from "antd/es/input/TextArea";
 import CategoryService from "../../../services/CategoryService";
 import _ from "lodash";
 import { useEffect, useState } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import ImageUpload from "./ImageUpload";
+import type { RcFile, UploadProps } from "antd/es/upload";
+import type { UploadFile } from "antd/es/upload/interface";
+import ApiService from "../../../services/ApiService";
+import PlacesService from "../../../services/PlacesService";
 
 interface IOptions {
   value: number;
   label: string;
 }
+
+const getBase64 = (file: RcFile): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
 
 const PlacesForm = () => {
   const time: any = [
@@ -172,6 +194,37 @@ const PlacesForm = () => {
   const [categories, setCategories] = useState<IOptions[]>([]);
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
+  // image upload
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  const handleCancel = () => setPreviewOpen(false);
+
+  const handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as RcFile);
+    }
+
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
+    setPreviewTitle(
+      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
+    );
+  };
+
+  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
+    setFileList(newFileList);
+
+  const uploadButton = (
+    <button style={{ border: 0, background: "none" }} type="button">
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </button>
+  );
+  //------------------------------------------------------
+
   const handleCheckboxChange = (checked: any) => {
     setIsCheckboxChecked(checked);
   };
@@ -212,8 +265,82 @@ const PlacesForm = () => {
     getAllByCategoryName();
   }, []);
 
-  const onFinish = (values: IPlacesForm) => {
-    console.log(values);
+  const onFinish = async (values: IPlacesForm) => {
+    const imageId: number[] = [];
+    let addressId: number = 0;
+    let linkId: number = 0;
+
+    _.forEach(fileList, async (element) => {
+      await ApiService.uploadImage(element)
+        .then((res) => {
+          console.log(res);
+          imageId.push(res.imageId);
+        })
+        .catch((e: Error) => {
+          console.log(e.message);
+        });
+    });
+
+    console.log("call api save address");
+    await ApiService.saveAddress(
+      values.addressString,
+      values.addressLinkMap,
+      values.embeddedAddress
+    )
+      .then((res) => {
+        addressId = res.id;
+      })
+      .catch((e: Error) => {
+        console.log(e.message);
+      });
+
+    console.log("call api save link");
+    await ApiService.saveLink(values.name, values.url)
+      .then((res) => {
+        linkId = res.id;
+      })
+      .catch((e: Error) => {
+        console.log(e.message);
+      });
+
+    console.log("call api save places");
+    const cost: number = values.cost;
+    const minTimePlaces: number = values.minTimePlaces;
+    const maxTimePlaces: number = values.maxTimePlaces;
+    const categoryId: number[] = values.categoryId;
+    categoryId.push(values.destination);
+
+    let beginDay: string = values.beginDay;
+    let endDay: string = values.endDay;
+    if (values.full) {
+      beginDay = "00:00";
+      endDay = "00:00";
+    }
+
+    const placeData: any = {
+      title: values.title,
+      phoneNumber: values.phoneNumber,
+      description: values.description,
+      cost,
+      beginDay,
+      endDay,
+      minTimePlaces,
+      maxTimePlaces,
+      categoryId,
+      imageId,
+      linkId,
+      addressId,
+      full: values.full,
+    };
+    console.log(placeData);
+
+    await PlacesService.savePlaces(placeData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e: Error) => {
+        console.log(e.message);
+      });
   };
 
   return (
@@ -245,7 +372,7 @@ const PlacesForm = () => {
               name="cost"
               rules={[{ required: true, message: "Please input your cost!" }]}
             >
-              <Input placeholder="cost" />
+              <InputNumber min={15} max={100000} placeholder="cost" />
             </Form.Item>
 
             <Row gutter={16}>
@@ -259,7 +386,7 @@ const PlacesForm = () => {
                     },
                   ]}
                 >
-                  <Input placeholder="Min time" />
+                  <InputNumber min={15} max={60} placeholder="Min time" />
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -272,7 +399,7 @@ const PlacesForm = () => {
                     },
                   ]}
                 >
-                  <Input placeholder="Max time" />
+                  <InputNumber min={15} max={300} placeholder="Max time" />
                 </Form.Item>
               </Col>
             </Row>
@@ -306,6 +433,7 @@ const PlacesForm = () => {
                   <Select
                     placeholder="Giờ mở cửa"
                     optionFilterProp="children"
+                    defaultValue="00:00"
                     options={time}
                     disabled={isCheckboxChecked}
                   />
@@ -316,6 +444,7 @@ const PlacesForm = () => {
                   <Select
                     placeholder="Giờ đóng cửa"
                     optionFilterProp="children"
+                    defaultValue="00:00"
                     options={time}
                     disabled={isCheckboxChecked}
                   />
@@ -402,7 +531,8 @@ const PlacesForm = () => {
             />
           </Form.Item>
         </div>
-        <Form.List name="imageId">
+
+        <Form.List name="tag">
           {(fields, { add, remove }, { errors }) => (
             <>
               {fields.map((field) => (
@@ -418,13 +548,12 @@ const PlacesForm = () => {
                       {
                         required: true,
                         whitespace: true,
-                        message:
-                          "Please input passenger's name or delete this field.",
+                        message: "Please input tag",
                       },
                     ]}
                     noStyle
                   >
-                    <ImageUpload />
+                    <Input />
                   </Form.Item>
                   {fields.length > 1 ? (
                     <MinusCircleOutlined
@@ -440,13 +569,32 @@ const PlacesForm = () => {
                   onClick={() => add()}
                   icon={<PlusOutlined />}
                 >
-                  Add image
+                  Add tag
                 </Button>
                 <Form.ErrorList errors={errors} />
               </Form.Item>
             </>
           )}
         </Form.List>
+        <div>
+          <Upload
+            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+            listType="picture-card"
+            fileList={fileList}
+            onPreview={handlePreview}
+            onChange={handleChange}
+          >
+            {fileList.length >= 8 ? null : uploadButton}
+          </Upload>
+          <Modal
+            open={previewOpen}
+            title={previewTitle}
+            footer={null}
+            onCancel={handleCancel}
+          >
+            <img alt="example" style={{ width: "100%" }} src={previewImage} />
+          </Modal>
+        </div>
 
         <Form.Item>
           <Button htmlType="submit">Submit</Button>
