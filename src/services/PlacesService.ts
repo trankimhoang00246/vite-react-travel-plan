@@ -13,6 +13,19 @@ const getAllNotP = async () => {
   }
 };
 
+const getPlaceDetails = async (id: string) => {
+  try {
+    const data = await http.get<any>(`/places/${id}`);
+    return data;
+  } catch (error) {
+    let errorMessage = "Failed to do something exceptional";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    console.log(errorMessage);
+  }
+};
+
 const savePlaces = async (placeData: any) => {
   try {
     const response = await http.post(`/places`, placeData);
@@ -30,6 +43,7 @@ const savePlaces = async (placeData: any) => {
 const PlacesService = {
   getAllNotP,
   savePlaces,
+  getPlaceDetails,
 };
 
 export default PlacesService;

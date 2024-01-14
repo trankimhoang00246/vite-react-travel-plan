@@ -11,6 +11,7 @@ import PlacesService from "../../../services/PlacesService";
 import _ from "lodash";
 import { Button } from "antd";
 import PlacesModal from "./PlacesModal";
+import { Link } from "react-router-dom";
 
 const PlacesTable = () => {
   const [placesData, setPlacesData] = useState<Array<IPlaces>>([]);
@@ -148,14 +149,14 @@ const PlacesTable = () => {
         >
           Sửa
         </a>,
-        <a
-          href="https://ant.design/components/form"
-          target="_blank"
+        <Link
+          className="mx-2"
+          to={`/admin/places/${record.id}`}
           rel="noopener noreferrer"
           key="view"
         >
           Xem
-        </a>,
+        </Link>,
         <TableDropdown
           key="actionGroup"
           onSelect={() => action?.reload()}
