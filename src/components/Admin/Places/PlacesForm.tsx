@@ -351,6 +351,7 @@ const PlacesForm = (props: PlacesFormProps) => {
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item<IPlacesForm>
+              initialValue={initialData?.title || ""}
               name="title"
               rules={[{ required: true, message: "Please input your title!" }]}
             >
@@ -359,6 +360,7 @@ const PlacesForm = (props: PlacesFormProps) => {
 
             <Form.Item<IPlacesForm>
               name="phoneNumber"
+              initialValue={initialData?.phoneNumber || ""}
               rules={[
                 { required: true, message: "Please input your phoneNumber!" },
               ]}
@@ -367,6 +369,7 @@ const PlacesForm = (props: PlacesFormProps) => {
             </Form.Item>
 
             <Form.Item<IPlacesForm>
+              initialValue={initialData?.cost || ""}
               name="cost"
               rules={[{ required: true, message: "Please input your cost!" }]}
             >
@@ -376,6 +379,7 @@ const PlacesForm = (props: PlacesFormProps) => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item<IPlacesForm>
+                  initialValue={initialData?.minTimePlaces}
                   name="minTimePlaces"
                   rules={[
                     {
@@ -389,6 +393,7 @@ const PlacesForm = (props: PlacesFormProps) => {
               </Col>
               <Col span={12}>
                 <Form.Item<IPlacesForm>
+                  initialValue={initialData?.maxTimePlaces}
                   name="maxTimePlaces"
                   rules={[
                     {
@@ -405,6 +410,7 @@ const PlacesForm = (props: PlacesFormProps) => {
 
           <Col span={12}>
             <Form.Item<IPlacesForm>
+              initialValue={initialData?.description || ""}
               name="description"
               rules={[
                 { required: true, message: "Please input your description!" },
@@ -418,7 +424,11 @@ const PlacesForm = (props: PlacesFormProps) => {
 
             <Row gutter={16}>
               <Col span={4}>
-                <Form.Item<IPlacesForm> name="full" valuePropName="checked">
+                <Form.Item<IPlacesForm>
+                  initialValue={initialData?.full}
+                  name="full"
+                  valuePropName="checked"
+                >
                   <Checkbox
                     onChange={(e) => handleCheckboxChange(e.target.checked)}
                   >
@@ -431,7 +441,7 @@ const PlacesForm = (props: PlacesFormProps) => {
                   <Select
                     placeholder="Giờ mở cửa"
                     optionFilterProp="children"
-                    defaultValue="00:00"
+                    defaultValue={initialData?.beginDay || "00:00"}
                     options={time}
                     disabled={isCheckboxChecked}
                   />
@@ -442,7 +452,7 @@ const PlacesForm = (props: PlacesFormProps) => {
                   <Select
                     placeholder="Giờ đóng cửa"
                     optionFilterProp="children"
-                    defaultValue={}
+                    defaultValue={initialData?.endDay || "00:00"}
                     options={time}
                     disabled={isCheckboxChecked}
                   />
@@ -466,6 +476,7 @@ const PlacesForm = (props: PlacesFormProps) => {
           <Col span={12}>
             <Form.Item<IPlacesForm>
               name="addressString"
+              initialValue={initialData?.addressString || ""}
               rules={[
                 { required: true, message: "Please input your address!" },
               ]}
@@ -475,6 +486,7 @@ const PlacesForm = (props: PlacesFormProps) => {
 
             <Form.Item<IPlacesForm>
               name="addressLinkMap"
+              initialValue={initialData?.addressLinkMap || ""}
               rules={[
                 { required: true, message: "Please input your link map!" },
               ]}
@@ -484,6 +496,7 @@ const PlacesForm = (props: PlacesFormProps) => {
 
             <Form.Item<IPlacesForm>
               name="embeddedAddress"
+              initialValue={initialData?.embeddedAddress || ""}
               rules={[
                 {
                   required: true,
@@ -497,6 +510,7 @@ const PlacesForm = (props: PlacesFormProps) => {
           <Col span={12}>
             <Form.Item<IPlacesForm>
               name="name"
+              initialValue={initialData?.name || ""}
               rules={[
                 { required: true, message: "Please input your name web!" },
               ]}
@@ -506,6 +520,7 @@ const PlacesForm = (props: PlacesFormProps) => {
 
             <Form.Item<IPlacesForm>
               name="url"
+              initialValue={initialData?.url || ""}
               rules={[
                 { required: true, message: "Please input your url web!" },
               ]}

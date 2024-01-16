@@ -27,6 +27,7 @@ const PlacesTable = () => {
 
   const showUpdateModal = (id: number) => {
     setIdUpdate(id);
+    console.log("id ", id);
     setIsUpdateModalOpen(true);
   };
 

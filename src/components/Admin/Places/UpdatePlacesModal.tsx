@@ -28,10 +28,13 @@ const UpdatePlacesModal = (props: IProps) => {
   };
 
   useEffect(() => {
-    PlacesService.getPlaceDetails(id.toString()).then((res) => {
-      setInitialData(res?.data);
-    });
-  }, []);
+    if (id !== 0) {
+      PlacesService.getPlaceDetails(id.toString()).then((res) => {
+        setInitialData(res?.data);
+        console.log(res?.data);
+      });
+    }
+  }, [id]);
 
   return (
     <div>
