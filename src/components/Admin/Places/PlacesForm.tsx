@@ -19,7 +19,6 @@ import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
 import ApiService from "../../../services/ApiService";
-import PlacesService from "../../../services/PlacesService";
 
 interface IOptions {
   value: number;
@@ -34,7 +33,13 @@ const getBase64 = (file: RcFile): Promise<string> =>
     reader.onerror = (error) => reject(error);
   });
 
-const PlacesForm = () => {
+interface PlacesFormProps {
+  onSubmit: (formData: any) => void;
+  initialData?: any;
+}
+
+const PlacesForm = (props: PlacesFormProps) => {
+  const { onSubmit, initialData } = props;
   const time: any = [
     {
       value: "05:00",
@@ -303,7 +308,6 @@ const PlacesForm = () => {
         console.log(e.message);
       });
 
-    console.log("call api save places");
     const cost: number = values.cost;
     const minTimePlaces: number = values.minTimePlaces;
     const maxTimePlaces: number = values.maxTimePlaces;
@@ -334,13 +338,7 @@ const PlacesForm = () => {
     };
     console.log(placeData);
 
-    await PlacesService.savePlaces(placeData)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((e: Error) => {
-        console.log(e.message);
-      });
+    onSubmit(placeData);
   };
 
   return (
@@ -429,7 +427,7 @@ const PlacesForm = () => {
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item<IPlacesForm> name="beginDay">
+                <Form.Item<IPlacesForm> name="beginDay" initialValue={"00:00"}>
                   <Select
                     placeholder="Giờ mở cửa"
                     optionFilterProp="children"
@@ -440,11 +438,11 @@ const PlacesForm = () => {
                 </Form.Item>
               </Col>
               <Col span={10}>
-                <Form.Item<IPlacesForm> name="endDay">
+                <Form.Item<IPlacesForm> name="endDay" initialValue={"00:00"}>
                   <Select
                     placeholder="Giờ đóng cửa"
                     optionFilterProp="children"
-                    defaultValue="00:00"
+                    defaultValue={}
                     options={time}
                     disabled={isCheckboxChecked}
                   />

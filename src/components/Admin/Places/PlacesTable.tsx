@@ -10,16 +10,24 @@ import { useEffect, useRef, useState } from "react";
 import PlacesService from "../../../services/PlacesService";
 import _ from "lodash";
 import { Button } from "antd";
-import PlacesModal from "./PlacesModal";
 import { Link } from "react-router-dom";
+import CreatePlacesModal from "./CreatePlacesModal";
+import UpdatePlacesModal from "./UpdatePlacesModal";
 
 const PlacesTable = () => {
   const [placesData, setPlacesData] = useState<Array<IPlaces>>([]);
   const actionRef = useRef<ActionType>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [idUpdate, setIdUpdate] = useState(0);
 
   const showModal = () => {
     setIsModalOpen(true);
+  };
+
+  const showUpdateModal = (id: number) => {
+    setIdUpdate(id);
+    setIsUpdateModalOpen(true);
   };
 
   const getAllNotP = () => {
@@ -39,7 +47,6 @@ const PlacesTable = () => {
         console.log(e);
       });
   };
-  const save = () => {};
 
   useEffect(() => {
     getAllNotP();
@@ -144,7 +151,7 @@ const PlacesTable = () => {
         <a
           key="editable"
           onClick={() => {
-            action?.startEditable?.(record.id);
+            showUpdateModal(record.id);
           }}
         >
           Sửa
@@ -168,98 +175,6 @@ const PlacesTable = () => {
       ],
     },
   ];
-
-  // const columns: ProColumns<IPlaces>[] = [
-  //   { title: "id", dataIndex: "id", width: 10, sorter: (a, b) => a.id - b.id },
-  //   {
-  //     title: "Tiêu đề",
-  //     dataIndex: "title",
-  //     width: 300,
-  //     sorter: (a, b) => a.title.localeCompare(b.title),
-  //   },
-  //   { title: "Mô tả", dataIndex: "description", width: 800 },
-  //   {
-  //     title: "SDT",
-  //     dataIndex: "phoneNumber",
-  //     width: 80,
-  //     sorter: (a, b) => a.phoneNumber.localeCompare(b.phoneNumber),
-  //   },
-  //   {
-  //     title: "Điểm đánh giá",
-  //     dataIndex: "point",
-  //     width: 10,
-  //     align: "right",
-  //     sorter: (a, b) => a.point - b.point,
-  //   },
-  //   { title: "Hình ảnh", dataIndex: "imageUrl", width: 10 },
-  //   {
-  //     title: "Chi phí",
-  //     dataIndex: "cost",
-  //     width: 10,
-  //     align: "right",
-  //     sorter: (a, b) => a.cost - b.cost,
-  //   },
-  //   {
-  //     title: "Đếm",
-  //     dataIndex: "count",
-  //     width: 10,
-  //     align: "right",
-  //     sorter: (a, b) => a.count - b.count,
-  //   },
-  //   { title: "Danh mục", dataIndex: "category", width: 10 },
-  //   {
-  //     title: "Thời gian tối đa",
-  //     dataIndex: "minTimePlaces",
-  //     width: 10,
-  //     sorter: (a, b) => a.minTimePlaces - b.minTimePlaces,
-  //   },
-  //   {
-  //     title: "Thời gian tối thiểu",
-  //     dataIndex: "maxTimePlaces",
-  //     width: 10,
-  //     sorter: (a, b) => a.maxTimePlaces - b.maxTimePlaces,
-  //   },
-  //   {
-  //     title: "Mở cửa 24/24",
-  //     dataIndex: "full",
-  //     width: 10,
-  //     align: "right",
-  //     render: (text, record) =>
-  //       record.full ? (
-  //         <CheckCircleOutlined className="text-green-600" />
-  //       ) : (
-  //         <CloseCircleOutlined className="text-red-600" />
-  //       ),
-  //   },
-  //   {
-  //     title: "Giờ mở của",
-  //     dataIndex: "beginDay",
-  //     width: 10,
-  //     align: "right",
-  //     render: (text, record) =>
-  //       record.full ? <div>_</div> : <div>{record.beginDay}</div>,
-  //   },
-  //   {
-  //     title: "Giờ đóng cửa",
-  //     dataIndex: "endDay",
-  //     width: 10,
-  //     align: "right",
-  //     render: (text, record) =>
-  //       record.full ? <div>_</div> : <div>{record.endDay}</div>,
-  //   },
-  //   {
-  //     title: "Ngày tạo",
-  //     dataIndex: "createdAt",
-  //     width: 10,
-  //     sorter: (a, b) => a.createdAt.localeCompare(b.createdAt),
-  //   },
-  //   {
-  //     title: "Cập nhật",
-  //     dataIndex: "updatedAt",
-  //     width: 10,
-  //     sorter: (a, b) => a.updatedAt.localeCompare(b.updatedAt),
-  //   },
-  // ];
 
   return (
     <div>
@@ -289,7 +204,16 @@ const PlacesTable = () => {
         ]}
       />
 
-      <PlacesModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <CreatePlacesModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
+
+      <UpdatePlacesModal
+        isModalOpen={isUpdateModalOpen}
+        setIsModalOpen={setIsUpdateModalOpen}
+        id={idUpdate}
+      />
     </div>
   );
 };
