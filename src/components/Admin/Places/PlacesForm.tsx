@@ -344,6 +344,24 @@ const PlacesForm = (props: PlacesFormProps) => {
 
   useEffect(() => {
     if (initialData) {
+      console.log(initialData);
+      const categoryId: number[] = [];
+
+      const category: any = initialData?.category;
+      _.forEach(category, (item) => {
+        categoryId.push(item.id);
+      });
+
+      const image = initialData.imageUrl;
+      setFileList(
+        _.map(image, (item) => ({
+          uid: item,
+          name: item,
+          status: "done",
+          url: item,
+        }))
+      );
+
       setFields([
         { name: ["title"], value: initialData?.title },
         { name: ["phoneNumber"], value: initialData?.phoneNumber },
@@ -352,7 +370,23 @@ const PlacesForm = (props: PlacesFormProps) => {
         { name: ["maxTimePlaces"], value: initialData?.maxTimePlaces },
         { name: ["description"], value: initialData?.description },
         { name: ["full"], value: initialData?.full },
+        {
+          name: ["addressString"],
+          value: initialData?.addressDto.addressString,
+        },
+        {
+          name: ["addressLinkMap"],
+          value: initialData?.addressDto.addressLinkMap,
+        },
+        {
+          name: ["embeddedAddress"],
+          value: initialData?.addressDto.embeddedAddress,
+        },
+        { name: ["name"], value: initialData?.link.name },
+        { name: ["url"], value: initialData?.link.url },
         { name: ["beginDay"], value: initialData?.beginDay },
+        { name: ["endDay"], value: initialData?.endDay },
+        { name: ["categoryId"], value: categoryId }, //category
       ]);
     }
   }, [initialData]);
