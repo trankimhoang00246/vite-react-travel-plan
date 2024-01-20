@@ -22,8 +22,14 @@ const UpdatePlacesModal = (props: IProps) => {
   };
 
   const updatePlace = async (placeData: any) => {
-    console.log(placeData);
-
+    console.log("data updated: ", placeData);
+    await PlacesService.updatePlaces(placeData, placeData.id)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((e: Error) => {
+        console.log(e.message);
+      });
     setIsModalOpen(false);
   };
 
@@ -45,7 +51,11 @@ const UpdatePlacesModal = (props: IProps) => {
         onCancel={handleCancel}
         width={1000}
       >
-        <PlacesForm onSubmit={updatePlace} initialData={initialData} />
+        <PlacesForm
+          onSubmit={updatePlace}
+          initialData={initialData}
+          action="update"
+        />
       </Modal>
     </div>
   );

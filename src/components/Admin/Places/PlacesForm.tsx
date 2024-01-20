@@ -36,10 +36,11 @@ const getBase64 = (file: RcFile): Promise<string> =>
 interface PlacesFormProps {
   onSubmit: (formData: any) => void;
   initialData?: any;
+  action?: string;
 }
 
 const PlacesForm = (props: PlacesFormProps) => {
-  const { onSubmit, initialData } = props;
+  const { onSubmit, initialData, action } = props;
   const time: any = [
     {
       value: "05:00",
@@ -272,42 +273,45 @@ const PlacesForm = (props: PlacesFormProps) => {
   }, []);
 
   const onFinish = async (values: IPlacesForm) => {
-    const imageId: number[] = [];
-    let addressId: number = 0;
-    let linkId: number = 0;
+    const imageId: number[] = initialData?.imageId;
+    let addressId: number = initialData?.addressDto.id;
+    let linkId: number = initialData?.link.id;
 
-    _.forEach(fileList, async (element) => {
-      await ApiService.uploadImage(element)
+    if (!action) {
+      _.forEach(fileList, async (element) => {
+        await ApiService.uploadImage(element)
+          .then((res) => {
+            console.log(res);
+            imageId.push(res.imageId);
+          })
+          .catch((e: Error) => {
+            console.log(e.message);
+          });
+      });
+      console.log(imageId);
+
+      console.log("call api save address");
+      await ApiService.saveAddress(
+        values.addressString,
+        values.addressLinkMap,
+        values.embeddedAddress
+      )
         .then((res) => {
-          console.log(res);
-          imageId.push(res.imageId);
+          addressId = res.id;
         })
         .catch((e: Error) => {
           console.log(e.message);
         });
-    });
 
-    console.log("call api save address");
-    await ApiService.saveAddress(
-      values.addressString,
-      values.addressLinkMap,
-      values.embeddedAddress
-    )
-      .then((res) => {
-        addressId = res.id;
-      })
-      .catch((e: Error) => {
-        console.log(e.message);
-      });
-
-    console.log("call api save link");
-    await ApiService.saveLink(values.name, values.url)
-      .then((res) => {
-        linkId = res.id;
-      })
-      .catch((e: Error) => {
-        console.log(e.message);
-      });
+      console.log("call api save link");
+      await ApiService.saveLink(values.name, values.url)
+        .then((res) => {
+          linkId = res.id;
+        })
+        .catch((e: Error) => {
+          console.log(e.message);
+        });
+    }
 
     const cost: number = values.cost;
     const minTimePlaces: number = values.minTimePlaces;
@@ -323,6 +327,7 @@ const PlacesForm = (props: PlacesFormProps) => {
     }
 
     const placeData: any = {
+      id: initialData?.id,
       title: values.title,
       phoneNumber: values.phoneNumber,
       description: values.description,
@@ -337,7 +342,8 @@ const PlacesForm = (props: PlacesFormProps) => {
       addressId,
       full: values.full,
     };
-    console.log(placeData);
+
+    console.log("place data form: ", placeData);
 
     onSubmit(placeData);
   };
