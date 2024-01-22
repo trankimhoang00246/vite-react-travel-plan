@@ -82,6 +82,30 @@ const login = async (username: string, password: string) => {
   }
 };
 
-const ApiService = { uploadImage, saveLink, saveAddress, login };
+const refreshToken = async (refreshToken: string) => {
+  try {
+    const response = await http.get(`/auth/refresh`, {
+      headers: {
+        "X-Refresh-Token": refreshToken,
+      },
+    });
+    const data = response.data;
+    return data;
+  } catch (error) {
+    let errorMessage = "Failed to do something exceptional";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    console.log(errorMessage);
+  }
+};
+
+const ApiService = {
+  uploadImage,
+  saveLink,
+  saveAddress,
+  login,
+  refreshToken,
+};
 
 export default ApiService;
