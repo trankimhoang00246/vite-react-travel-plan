@@ -54,11 +54,26 @@ const updatePlaces = async (placeData: any, id: string) => {
   }
 };
 
+const deletePlaces = async (id: string) => {
+  try {
+    const response = await http.delete(`/places?id=${id}`);
+    const data = response.data;
+    return data;
+  } catch (error) {
+    let errorMessage = "Failed to do something exceptional";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    console.log(errorMessage);
+  }
+};
+
 const PlacesService = {
   getAllNotP,
   savePlaces,
   getPlaceDetails,
   updatePlaces,
+  deletePlaces,
 };
 
 export default PlacesService;

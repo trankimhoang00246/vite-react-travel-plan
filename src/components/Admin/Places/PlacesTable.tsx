@@ -9,7 +9,7 @@ import IPlaces from "../../../types/IPlaces";
 import { useEffect, useRef, useState } from "react";
 import PlacesService from "../../../services/PlacesService";
 import _ from "lodash";
-import { Button } from "antd";
+import { Button, MenuProps } from "antd";
 import { Link } from "react-router-dom";
 import CreatePlacesModal from "./CreatePlacesModal";
 import UpdatePlacesModal from "./UpdatePlacesModal";
@@ -29,6 +29,17 @@ const PlacesTable = () => {
     setIdUpdate(id);
     console.log("id ", id);
     setIsUpdateModalOpen(true);
+  };
+
+  const deletePlaces = (id: number) => {
+    PlacesService.deletePlaces(id.toString())
+      .then((res) => {
+        console.log(res);
+        getAllNotP();
+      })
+      .catch((e: Error) => {
+        console.log(e);
+      });
   };
 
   const getAllNotP = () => {
@@ -165,14 +176,14 @@ const PlacesTable = () => {
         >
           Xem
         </Link>,
-        <TableDropdown
-          key="actionGroup"
-          onSelect={() => action?.reload()}
-          menus={[
-            { key: "copy", name: "Chép" },
-            { key: "delete", name: "Xóa" },
-          ]}
-        />,
+        <a
+          key="delete"
+          onClick={() => {
+            deletePlaces(record.id);
+          }}
+        >
+          Delete
+        </a>,
       ],
     },
   ];
