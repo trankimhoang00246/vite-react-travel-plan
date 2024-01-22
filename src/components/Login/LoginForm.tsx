@@ -1,9 +1,22 @@
 import { Button, Checkbox, Form, Input } from "antd";
 import { Link } from "react-router-dom";
+import ApiService from "../../services/ApiService";
 
 const LoginForm = () => {
   const onFinish = (values: any) => {
     console.log("Success:", values);
+    login(values.username, values.password);
+  };
+
+  const login = (username: string, password: string) => {
+    ApiService.login(username, password).then((res) => {
+      console.log(res);
+      localStorage.setItem("token", res.token);
+      localStorage.setItem("refreshToken", res.refreshToken);
+      localStorage.setItem("username", res.username);
+
+      window.location.href = "/";
+    });
   };
 
   const onFinishFailed = (errorInfo: any) => {

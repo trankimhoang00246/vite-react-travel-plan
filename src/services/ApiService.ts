@@ -65,6 +65,23 @@ const saveAddress = async (
   }
 };
 
-const ApiService = { uploadImage, saveLink, saveAddress };
+const login = async (username: string, password: string) => {
+  try {
+    const response = await http.post(`/auth/login`, {
+      username,
+      password,
+    });
+    const data = response.data;
+    return data;
+  } catch (error) {
+    let errorMessage = "Failed to do something exceptional";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    console.log(errorMessage);
+  }
+};
+
+const ApiService = { uploadImage, saveLink, saveAddress, login };
 
 export default ApiService;
