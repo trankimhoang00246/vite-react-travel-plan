@@ -2,14 +2,13 @@ import { CloseCircleOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import {
   ProTable,
   type ProColumns,
-  TableDropdown,
   ActionType,
 } from "@ant-design/pro-components";
 import IPlaces from "../../../types/IPlaces";
 import { useEffect, useRef, useState } from "react";
 import PlacesService from "../../../services/PlacesService";
 import _ from "lodash";
-import { Button, MenuProps } from "antd";
+import { Button } from "antd";
 import { Link } from "react-router-dom";
 import CreatePlacesModal from "./CreatePlacesModal";
 import UpdatePlacesModal from "./UpdatePlacesModal";
@@ -159,7 +158,7 @@ const PlacesTable = () => {
       title: "Vận hành",
       key: "option",
       width: 10,
-      render: (text, record, _, action) => [
+      render: (text, record) => [
         <a
           key="editable"
           onClick={() => {
