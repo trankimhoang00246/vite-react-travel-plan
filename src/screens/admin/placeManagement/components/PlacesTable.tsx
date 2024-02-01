@@ -4,9 +4,9 @@ import {
   type ProColumns,
   ActionType,
 } from "@ant-design/pro-components";
-import IPlaces from "../../../types/IPlaces";
+import IPlaces from "../../../../types/IPlaces";
 import { useEffect, useRef, useState } from "react";
-import PlacesService from "../../../services/PlacesService";
+import PlacesService from "../../../../services/apis/place/places.api";
 import _ from "lodash";
 import { Button } from "antd";
 import { Link } from "react-router-dom";

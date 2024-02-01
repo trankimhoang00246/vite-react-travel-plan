@@ -6,7 +6,7 @@ import {
 import { Button } from "antd";
 import CategoryList from "./CategoryList";
 import { useEffect, useState } from "react";
-import CategoryService from "../../../services/CategoryService";
+import CategoryService from "../../../services/apis/category/category.api";
 import ICategory from "../../../types/ICategory";
 
 const Categories = () => {

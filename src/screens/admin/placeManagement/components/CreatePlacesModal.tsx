@@ -1,7 +1,7 @@
 import { Modal } from "antd";
 import PlacesForm from "./PlacesForm";
-import IPlacesForm from "../../../types/IPlacesForm";
-import PlacesService from "../../../services/PlacesService";
+import IPlacesForm from "../../../../types/IPlacesForm";
+import PlacesService from "../../../../services/apis/place/places.api";
 
 interface IProps {
   isModalOpen: boolean;

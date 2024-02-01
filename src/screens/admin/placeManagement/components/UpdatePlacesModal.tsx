@@ -1,7 +1,7 @@
 import { Modal } from "antd";
 import PlacesForm from "./PlacesForm";
 import { useEffect, useState } from "react";
-import PlacesService from "../../../services/PlacesService";
+import PlacesService from "../../../../services/apis/place/places.api";
 
 interface IProps {
   isModalOpen: boolean;

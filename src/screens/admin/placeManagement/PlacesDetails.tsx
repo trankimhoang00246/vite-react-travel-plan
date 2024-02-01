@@ -1,4 +1,4 @@
-import PlaceDetails from "../../../components/Admin/Places/PlaceDetails";
+import PlaceDetails from "./components/PlaceDetails";
 
 const PlacesDetails = () => {
   return (

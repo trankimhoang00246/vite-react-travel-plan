@@ -1,3 +1,22 @@
+export default interface IPlaces {
+  id: number;
+  title: string;
+  description: string;
+  phoneNumber: string;
+  point: number;
+  imageUrl: string;
+  cost: number;
+  count: number;
+  category: Array<string>;
+  minTimePlaces: number;
+  maxTimePlaces: number;
+  full: boolean;
+  beginDay: string;
+  endDay: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export default interface IPlacesForm {
   title: string;
   phoneNumber: string;
@@ -16,5 +35,5 @@ export default interface IPlacesForm {
   url: string;
   imageId: any;
   tag: string[];
-  full: string;
+  full: boolean;
 }

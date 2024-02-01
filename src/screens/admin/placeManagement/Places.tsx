@@ -1,4 +1,4 @@
-import PlacesTable from "../../../components/Admin/Places/PlacesTable";
+import PlacesTable from "./components/PlacesTable";
 
 const Places = () => {
   return (

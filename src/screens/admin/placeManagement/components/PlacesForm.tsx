@@ -10,15 +10,15 @@ import {
   Modal,
   InputNumber,
 } from "antd";
-import IPlacesForm from "../../../types/IPlacesForm";
+import IPlacesForm from "../../../../types/IPlacesForm";
 import TextArea from "antd/es/input/TextArea";
-import CategoryService from "../../../services/CategoryService";
+import CategoryService from "../../../../services/apis/category/category.api";
 import _ from "lodash";
 import { useEffect, useState } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
-import ApiService from "../../../services/ApiService";
+import ApiService from "../../../../services/apiService";
 
 interface IOptions {
   value: number;

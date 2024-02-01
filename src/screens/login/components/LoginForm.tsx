@@ -1,6 +1,6 @@
 import { Button, Checkbox, Form, Input } from "antd";
 import { Link } from "react-router-dom";
-import ApiService from "../../services/ApiService";
+import ApiService from "../../../services/apiService";
 
 const LoginForm = () => {
   const onFinish = (values: any) => {

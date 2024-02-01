@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import PlacesService from "../../../services/PlacesService";
+import PlacesService from "../../../../services/apis/place/places.api";
 import { useParams } from "react-router-dom";
 
 const PlaceDetails = () => {
