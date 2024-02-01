@@ -1,5 +1,5 @@
 import { UploadFile } from "antd";
-import http from "../httpCommon";
+import http from "../configs/httpCommon";
 
 const uploadImage = async (file: UploadFile) => {
   try {

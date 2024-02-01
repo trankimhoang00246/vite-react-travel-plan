@@ -1,4 +1,4 @@
-import http from "../../../httpCommon";
+import http from "../../../configs/httpCommon";
 
 const getAllNotP = async () => {
   try {
