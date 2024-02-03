@@ -10,7 +10,6 @@ import {
   Modal,
   InputNumber,
 } from "antd";
-import IPlacesForm from "../../../../types/IPlacesForm";
 import TextArea from "antd/es/input/TextArea";
 import CategoryService from "../../../../services/apis/category/category.api";
 import _ from "lodash";
@@ -18,7 +17,8 @@ import { useEffect, useState } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import type { RcFile, UploadProps } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
-import ApiService from "../../../../services/apiService";
+import apiService from "../../../../services/apis/apiService.api";
+import IPlacesForm from "../../../../services/apis/place/places.interface";
 
 interface IOptions {
   value: number;
@@ -279,7 +279,8 @@ const PlacesForm = (props: PlacesFormProps) => {
 
     if (!action) {
       _.forEach(fileList, async (element) => {
-        await ApiService.uploadImage(element)
+        await apiService
+          .uploadImage(element)
           .then((res) => {
             console.log(res);
             imageId.push(res.imageId);
@@ -291,11 +292,12 @@ const PlacesForm = (props: PlacesFormProps) => {
       console.log(imageId);
 
       console.log("call api save address");
-      await ApiService.saveAddress(
-        values.addressString,
-        values.addressLinkMap,
-        values.embeddedAddress
-      )
+      await apiService
+        .saveAddress(
+          values.addressString,
+          values.addressLinkMap,
+          values.embeddedAddress
+        )
         .then((res) => {
           addressId = res.id;
         })
@@ -304,7 +306,8 @@ const PlacesForm = (props: PlacesFormProps) => {
         });
 
       console.log("call api save link");
-      await ApiService.saveLink(values.name, values.url)
+      await apiService
+        .saveLink(values.name, values.url)
         .then((res) => {
           linkId = res.id;
         })

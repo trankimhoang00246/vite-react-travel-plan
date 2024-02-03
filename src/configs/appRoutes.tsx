@@ -1,16 +1,20 @@
 import { RouteObject } from "react-router-dom";
-import Home from "../screens/home/Home";
-import Login from "../screens/login/Login";
-import NotFound from "../screens/error/NotFound";
-import Places from "../screens/admin/placeManagement/Places";
-import PlacesDetails from "../screens/admin/placeManagement/PlacesDetails";
+import LoginAdminPage from "../screens/admin/login";
+import LoginUserPage from "../screens/login";
+import HomePage from "../screens/home";
+import PlacesPage from "../screens/admin/placeManagement";
+import NotFoundPage from "../screens/error/notFound";
+import DashboardAdminPage from "../screens/admin/dashboard";
 
 const appRoutes: RouteObject[] = [
-  { path: "*", element: <NotFound /> },
-  { path: "/", element: <Home /> },
-  { path: "/login", element: <Login /> },
-  { path: "/admin/places", element: <Places /> },
-  { path: "/admin/places/:id", element: <PlacesDetails /> },
+  { path: "*", element: <NotFoundPage /> },
+  { path: "/", element: <HomePage /> },
+  { path: "/login", element: <LoginUserPage /> },
+
+  //admin
+  { path: "/admin/dashboard", element: <DashboardAdminPage /> },
+  { path: "/admin/places", element: <PlacesPage /> },
+  { path: "/admin/login", element: <LoginAdminPage /> },
 ];
 
 export default appRoutes;

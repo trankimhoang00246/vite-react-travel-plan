@@ -1,6 +1,6 @@
 import PlacesTable from "./components/PlacesTable";
 
-const Places = () => {
+const PlacesPage = () => {
   return (
     <div>
       <PlacesTable />
@@ -8,4 +8,4 @@ const Places = () => {
   );
 };
 
-export default Places;
+export default PlacesPage;

@@ -1,13 +1,13 @@
-import LoginForm from "./components/LoginForm";
+import LoginFormUser from "./components/LoginFormUser";
 
-const Login = () => {
+const LoginUserPage = () => {
   return (
     <div className="h-screen flex justify-center items-center">
       <div className="flex-1 max-w-[600px]">
-        <LoginForm />
+        <LoginFormUser />
       </div>
     </div>
   );
 };
 
-export default Login;
+export default LoginUserPage;

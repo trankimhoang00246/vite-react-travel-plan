@@ -1,7 +1,7 @@
 import { LoadingOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
-const NotFound = () => {
+const NotFoundPage = () => {
   return (
     <div className="h-screen flex items-center justify-center flex-col">
       <div className="text-6xl font-semibold">404</div>
@@ -16,4 +16,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default NotFoundPage;
