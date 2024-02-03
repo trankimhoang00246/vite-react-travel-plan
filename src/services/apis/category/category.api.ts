@@ -1,4 +1,4 @@
-import http from "../../../httpCommon";
+import http from "../../../configs/httpCommon";
 import ICategory from "./category.interface";
 
 const getAllByCategoryName = async (name: string) => {

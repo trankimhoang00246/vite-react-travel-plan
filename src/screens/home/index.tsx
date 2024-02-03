@@ -1,9 +1,9 @@
-import Footer from "../../components/Footer/Footer";
-import Header from "../../components/Header/Header";
+import Footer from "../../components/footer/Footer";
+import Header from "../../components/header/Header";
 import Banner from "./components/Banner";
 import Categories from "./components/Categories";
 
-const Home = () => {
+const HomePage = () => {
   return (
     <div className="max-w-screen-xl mx-auto">
       <Header />
@@ -14,4 +14,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
